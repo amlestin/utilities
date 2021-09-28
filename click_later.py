@@ -12,6 +12,7 @@ else:
 
 # Read pointer position
 print(f'The current pointer position is {mouse.position}')
+#TODO: Save current pointer position for use after delay
 
 print(f'Clicking in: {delay} seconds!')
 time.sleep(delay)
