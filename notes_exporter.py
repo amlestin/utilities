@@ -48,9 +48,10 @@ print(header)
 print(body)
 
 try:
-    os.mkdir('notes')
+    if 'notes' not in os.listdir('.'):
+        os.mkdir('notes')
 except OSError as e:
-    print(f'notes dir exists: {e}')
+    print(f'Attempted to create notes dir that already exists: {e}')
 
 with open(f'notes/{header}.txt', 'w') as f:
     f.write(body)
