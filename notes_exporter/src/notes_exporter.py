@@ -76,4 +76,5 @@ def main():
     save_cur_note(my_mouse, my_keyboard)
 
 
-main()
+if __name__ == '__main__':
+    main()
