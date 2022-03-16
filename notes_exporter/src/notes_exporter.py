@@ -75,6 +75,15 @@ def main():
 
     save_cur_note(my_mouse, my_keyboard)
 
+    # Reset cursor to notes_pos
+
+    # Enter shortcut keys to move down to next note
+
+    # Run save_cur_note
+
+    # TODO: When does the loop stop?
+    # Detect if notes/{header}.txt is already in the dir, if so then quit
+
 
 if __name__ == '__main__':
     main()
