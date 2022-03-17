@@ -56,11 +56,20 @@ def save_cur_note(my_mouse, my_keyboard):
     print(header)
     print(body)
 
-    # Create notes dir if not exists and write a text file for the current note
-    create_notes_dir()
-    with open(f'notes/{header}.txt', 'w') as f:
-        f.write(body)
+    # Create notes dir if not exists
+    try:
+        create_notes_dir()
+    except OSError as e:
+            print("Failed to create a notes directory")
+            return -1
 
+    # Write a text file for the current note
+    try:
+        with open(f'notes/{header}.txt', 'w') as f:
+            f.write(body)
+    except Exception as e:
+        print(f"Failed to write the note file due to {e}")
+        return -1
 
 def main():
     # init mouse and keyboard controllers
@@ -76,6 +85,7 @@ def main():
     save_cur_note(my_mouse, my_keyboard)
 
     # Reset cursor to notes_pos
+    my_mouse.position = notes_pos
 
     # Enter shortcut keys to move down to next note
 
