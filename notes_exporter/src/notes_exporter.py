@@ -65,8 +65,10 @@ def save_cur_note(my_mouse, my_keyboard):
 
     # Write a text file for the current note
     try:
-        with open(f'notes/{header}.txt', 'w') as f:
+        filename = f'notes/{header}.txt'
+        with open(filename, 'w') as f:
             f.write(body)
+            return filename
     except Exception as e:
         print(f"Failed to write the note file due to {e}")
         return -1
@@ -82,17 +84,25 @@ def main():
     print(f'Clicking in: {START_DELAY} seconds!')
     time.sleep(START_DELAY)
 
-    save_cur_note(my_mouse, my_keyboard)
+    created_file = save_cur_note(my_mouse, my_keyboard)
 
     # Reset cursor to notes_pos
     my_mouse.position = notes_pos
 
     # Enter shortcut keys to move down to next note
 
-    # Run save_cur_note
-
+    # Run save_cur_note until end of notes
     # TODO: When does the loop stop?
     # Detect if notes/{header}.txt is already in the dir, if so then quit
+    last_created_file = ''
+    while True:
+        created_file = save_cur_note(my_mouse, my_keyboard)
+        # TODO: compare hashes instead of header names in case two notes in a row use the same title without being the same note
+        if created_file == last_created_file:
+            print("A file was written twice. End of notes reached.")
+            break
+        else:
+            last_created_file = created_file
 
 
 if __name__ == '__main__':
