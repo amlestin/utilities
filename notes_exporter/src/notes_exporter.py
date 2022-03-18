@@ -13,6 +13,34 @@ else:
 # Delay between keyboard/mouse inputs
 INPUT_DELAY = 1
 
+# Create hash of file
+# Python program to find the SHA-1 message digest of a file
+# https://www.programiz.com/python-programming/examples/hash-file
+# importing the hashlib module
+import hashlib
+
+def hash_file(filename):
+    """"This function returns the SHA-1 hash
+    of the file passed into it"""
+
+    # make a hash object
+    h = hashlib.sha1()
+
+    # open file for reading in binary mode
+    with open(filename,'rb') as file:
+
+        # loop till the end of the file
+        chunk = 0
+        while chunk != b'':
+            # read only 1024 bytes at a time
+            chunk = file.read(1024)
+            h.update(chunk)
+
+    # return the hex representation of digest
+    return h.hexdigest()
+
+    message = hash_file("track1.mp3")
+    print(message)
 
 # Press and release cmd+a
 def select_all_text(my_keyboard):
@@ -68,7 +96,7 @@ def save_cur_note(my_mouse, my_keyboard):
         filename = f'notes/{header}.txt'
         with open(filename, 'w') as f:
             f.write(body)
-            return filename
+            return hash_file(filename)
     except Exception as e:
         print(f"Failed to write the note file due to {e}")
         return -1
@@ -92,12 +120,10 @@ def main():
     # Enter shortcut keys to move down to next note
 
     # Run save_cur_note until end of notes
-    # TODO: When does the loop stop?
-    # Detect if notes/{header}.txt is already in the dir, if so then quit
+    # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
     last_created_file = ''
     while True:
         created_file = save_cur_note(my_mouse, my_keyboard)
-        # TODO: compare hashes instead of header names in case two notes in a row use the same title without being the same note
         if created_file == last_created_file:
             print("A file was written twice. End of notes reached.")
             break
