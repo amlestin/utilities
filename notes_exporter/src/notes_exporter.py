@@ -118,6 +118,7 @@ def main():
     my_mouse.position = notes_pos
 
     # Enter shortcut keys to move down to next note
+    # Found the shortcuts: https://support.apple.com/guide/notes/keyboard-shortcuts-and-gestures-apd46c25187e/mac
 
     # Run save_cur_note until end of notes
     # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
