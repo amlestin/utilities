@@ -39,8 +39,6 @@ def hash_file(filename):
     # return the hex representation of digest
     return h.hexdigest()
 
-    message = hash_file("track1.mp3")
-    print(message)
 
 # Press and release cmd+a
 def select_all_text(my_keyboard):
@@ -119,7 +117,8 @@ def main():
 
     # Enter shortcut keys to move down to next note
     # Found the shortcuts: https://support.apple.com/guide/notes/keyboard-shortcuts-and-gestures-apd46c25187e/mac
-
+    # TODO: Implement the loop using the gallery view shortcut CMD+2, copy, then ESC
+    
     # Run save_cur_note until end of notes
     # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
     last_created_file = ''
