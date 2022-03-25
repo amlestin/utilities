@@ -117,8 +117,10 @@ def main():
 
     # Enter shortcut keys to move down to next note
     # Found the shortcuts: https://support.apple.com/guide/notes/keyboard-shortcuts-and-gestures-apd46c25187e/mac
-    # TODO: Implement the loop using the gallery view shortcut CMD+2, copy, then ESC
-    
+    # TODO: Implement the loop using the gallery view shortcut CMD+2, Enter to read a note, copy, then ESC
+    # right arrow for next note until the same note repeats (end of row), then backtrack to beginning or row, hit down arrow
+
+
     # Run save_cur_note until end of notes
     # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
     last_created_file = ''
