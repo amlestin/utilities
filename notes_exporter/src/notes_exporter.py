@@ -39,6 +39,10 @@ def hash_file(filename):
     # return the hex representation of digest
     return h.hexdigest()
 
+# Press and release ESC
+def press_esc(my_keyboard):
+    my_keyboard.press(keyboard.Key.esc)
+    my_keyboard.release(keyboard.Key.esc)
 
 # Press and release cmd+a
 def select_all_text(my_keyboard):
