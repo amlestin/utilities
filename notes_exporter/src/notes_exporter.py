@@ -44,6 +44,12 @@ def press_esc(my_keyboard):
     my_keyboard.press(keyboard.Key.esc)
     my_keyboard.release(keyboard.Key.esc)
 
+# Press and release right arrow key
+
+# Press and release left arrow key
+
+# Press and release down arrow key
+
 # Press and release cmd+a
 def select_all_text(my_keyboard):
     my_keyboard.press(keyboard.Key.cmd)
@@ -78,9 +84,16 @@ def save_cur_note(my_mouse, my_keyboard):
 
     # Extract notes text from clipboard and separate to header, body
     text = pyperclip.paste()
-    text_lines = text.split("\n")
-    header = text_lines[0].rstrip()
-    body = '\n'.join(text_lines[1:])
+    if text is None:
+        time.sleep(INPUT_DELAY)
+        text = pyperclip.paste()
+
+    try:
+        text_lines = text.split("\n")
+        header = text_lines[0].rstrip()
+        body = '\n'.join(text_lines[1:])
+    except Exception as e:
+        print("Error: could not paste text: {e}")
 
     # Log processed text
     print(header)
@@ -135,6 +148,7 @@ def main():
             break
         else:
             last_created_file = created_file
+        press_esc(my_keyboard=my_keyboard)
 
 
 if __name__ == '__main__':
