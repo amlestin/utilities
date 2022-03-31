@@ -45,10 +45,19 @@ def press_esc(my_keyboard):
     my_keyboard.release(keyboard.Key.esc)
 
 # Press and release right arrow key
+def press_right_arrow(my_keyboard):
+    my_keyboard.press(keyboard.Key.right)
+    my_keyboard.release(keyboard.Key.right)
 
 # Press and release left arrow key
+def press_left_arrow(my_keyboard):
+    my_keyboard.press(keyboard.Key.left)
+    my_keyboard.release(keyboard.Key.left)
 
 # Press and release down arrow key
+def press_down_arrow(my_keyboard):
+    my_keyboard.press(keyboard.Key.down)
+    my_keyboard.release(keyboard.Key.down)
 
 # Press and release cmd+a
 def select_all_text(my_keyboard):
