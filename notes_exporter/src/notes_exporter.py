@@ -59,6 +59,14 @@ def press_down_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.down)
     my_keyboard.release(keyboard.Key.down)
 
+# Press cmd+2 to activate gallery view
+def press_cmd_2(my_keyboard):
+    my_keyboard.press(keyboard.Key.cmd)
+    my_keyboard.press('2')
+    my_keyboard.release(keyboard.Key.cmd)
+    my_keyboard.release('2')
+
+
 # Press and release cmd+a
 def select_all_text(my_keyboard):
     my_keyboard.press(keyboard.Key.cmd)
@@ -136,6 +144,8 @@ def main():
     print(f'Clicking in: {START_DELAY} seconds!')
     time.sleep(START_DELAY)
 
+    press_cmd_2(my_keyboard=my_keyboard)
+    
     created_file = save_cur_note(my_mouse, my_keyboard)
 
     # Reset cursor to notes_pos
