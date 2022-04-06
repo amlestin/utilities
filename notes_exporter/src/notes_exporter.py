@@ -4,6 +4,7 @@ import sys
 import pyperclip
 from pynput import mouse, keyboard
 
+
 # Set delay between program start and first automatic action
 if len(sys.argv) < 2:
     START_DELAY = 1
@@ -12,6 +13,7 @@ else:
 
 # Delay between keyboard/mouse inputs
 INPUT_DELAY = 1
+
 
 # Create hash of file
 # Python program to find the SHA-1 message digest of a file
@@ -39,25 +41,30 @@ def hash_file(filename):
     # return the hex representation of digest
     return h.hexdigest()
 
+
 # Press and release ESC
 def press_esc(my_keyboard):
     my_keyboard.press(keyboard.Key.esc)
     my_keyboard.release(keyboard.Key.esc)
+
 
 # Press and release right arrow key
 def press_right_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.right)
     my_keyboard.release(keyboard.Key.right)
 
+
 # Press and release left arrow key
 def press_left_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.left)
     my_keyboard.release(keyboard.Key.left)
 
+
 # Press and release down arrow key
 def press_down_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.down)
     my_keyboard.release(keyboard.Key.down)
+
 
 # Press cmd+2 to activate gallery view
 def press_cmd_2(my_keyboard):
@@ -74,12 +81,20 @@ def select_all_text(my_keyboard):
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('a')
 
+
 # Press and release cmd+c
 def copy_text(my_keyboard):
     my_keyboard.press(keyboard.Key.cmd)
     my_keyboard.press('c')
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('c')
+
+
+# Press and release enter key
+def press_enter(my_keyboard):
+    my_keyboard.press(keyboard.Key.enter)
+    my_keyboard.release(keyboard.Key.enter)
+
 
 # Create /notes dir to save each note txt file
 def create_notes_dir():
@@ -88,6 +103,7 @@ def create_notes_dir():
             os.mkdir('notes')
     except OSError as e:
         print(f'Attempted to create notes dir that already exists: {e}')
+
 
 def save_cur_note(my_mouse, my_keyboard):
     # Click on notes window to focus it
@@ -133,6 +149,7 @@ def save_cur_note(my_mouse, my_keyboard):
         print(f"Failed to write the note file due to {e}")
         return -1
 
+
 def main():
     # init mouse and keyboard controllers
     my_mouse = mouse.Controller()
@@ -167,7 +184,8 @@ def main():
             break
         else:
             last_created_file = created_file
-        press_esc(my_keyboard=my_keyboard)
+            press_esc(my_keyboard=my_keyboard)
+            press_right_arrow(my_keyboard=my_keyboard)
 
 
 if __name__ == '__main__':
