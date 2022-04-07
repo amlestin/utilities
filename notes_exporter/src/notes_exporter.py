@@ -12,7 +12,7 @@ else:
     START_DELAY = int(sys.argv[1])
 
 # Delay between keyboard/mouse inputs
-INPUT_DELAY = 1
+INPUT_DELAY = 3
 
 
 # Create hash of file
@@ -46,25 +46,25 @@ def hash_file(filename):
 def press_esc(my_keyboard):
     my_keyboard.press(keyboard.Key.esc)
     my_keyboard.release(keyboard.Key.esc)
-
+    print("Press and release ESC")
 
 # Press and release right arrow key
 def press_right_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.right)
     my_keyboard.release(keyboard.Key.right)
-
+    print("Press and release right arrow key")
 
 # Press and release left arrow key
 def press_left_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.left)
     my_keyboard.release(keyboard.Key.left)
-
+    print("Press and release left arrow key")
 
 # Press and release down arrow key
 def press_down_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.down)
     my_keyboard.release(keyboard.Key.down)
-
+    print("Press and release down arrow key")
 
 # Press cmd+2 to activate gallery view
 def press_cmd_2(my_keyboard):
@@ -72,7 +72,7 @@ def press_cmd_2(my_keyboard):
     my_keyboard.press('2')
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('2')
-
+    print("Press cmd+2 to activate gallery view")
 
 # Press and release cmd+a
 def select_all_text(my_keyboard):
@@ -80,7 +80,7 @@ def select_all_text(my_keyboard):
     my_keyboard.press('a')
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('a')
-
+    print("Press and release cmd+a")
 
 # Press and release cmd+c
 def copy_text(my_keyboard):
@@ -88,13 +88,13 @@ def copy_text(my_keyboard):
     my_keyboard.press('c')
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('c')
-
+    print("Press and release cmd+c")
 
 # Press and release enter key
 def press_enter(my_keyboard):
     my_keyboard.press(keyboard.Key.enter)
     my_keyboard.release(keyboard.Key.enter)
-
+    print("Press and release enter key")
 
 # Create /notes dir to save each note txt file
 def create_notes_dir():
@@ -106,10 +106,6 @@ def create_notes_dir():
 
 
 def save_cur_note(my_mouse, my_keyboard):
-    # Click on notes window to focus it
-    my_mouse.click(mouse.Button.left, 2)
-    time.sleep(INPUT_DELAY)
-
     # Select all text in the notes window and copy it to keyboard
     select_all_text(my_keyboard)
     time.sleep(INPUT_DELAY)
@@ -129,8 +125,8 @@ def save_cur_note(my_mouse, my_keyboard):
         print("Error: could not paste text: {e}")
 
     # Log processed text
-    print(header)
-    print(body)
+    #print(header)
+    #print(body)
 
     # Create notes dir if not exists
     try:
@@ -161,9 +157,12 @@ def main():
     print(f'Clicking in: {START_DELAY} seconds!')
     time.sleep(START_DELAY)
 
-    press_cmd_2(my_keyboard=my_keyboard)
-    
+    # Click on notes window to focus it
+    my_mouse.click(mouse.Button.left, 2)
+    time.sleep(INPUT_DELAY)
+
     created_file = save_cur_note(my_mouse, my_keyboard)
+    press_cmd_2(my_keyboard=my_keyboard)
 
     # Reset cursor to notes_pos
     my_mouse.position = notes_pos
@@ -176,16 +175,32 @@ def main():
 
     # Run save_cur_note until end of notes
     # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
-    last_created_file = ''
+    files_written = []
     while True:
+        # Move right to next note
+        press_right_arrow(my_keyboard=my_keyboard)
+
+        time.sleep(INPUT_DELAY)
+
+        # Open highlighted note
+        press_enter(my_keyboard=my_keyboard)
+
+        # Save highlighted note and store its hash
         created_file = save_cur_note(my_mouse, my_keyboard)
-        if created_file == last_created_file:
-            print("A file was written twice. End of notes reached.")
+        files_written.append(created_file)
+
+        # Return to gallery view
+        press_esc(my_keyboard=my_keyboard)
+        time.sleep(INPUT_DELAY)
+
+        # If last two notes are same, end of files reached
+        if files_written[-1] == files_written[len(files_written)-2]:
+            print("Reached end of notes. Exiting program.")
             break
-        else:
-            last_created_file = created_file
-            press_esc(my_keyboard=my_keyboard)
-            press_right_arrow(my_keyboard=my_keyboard)
+        elif created_file == files_written[-1]:
+            # Move to next row of gallery view
+            press_down_arrow(my_keyboard=my_keyboard)
+
 
 
 if __name__ == '__main__':
