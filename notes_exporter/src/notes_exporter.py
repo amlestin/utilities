@@ -2,6 +2,8 @@ import time
 import os
 import sys
 import pyperclip
+import hashlib
+import re
 from pynput import mouse, keyboard
 
 
@@ -12,15 +14,12 @@ else:
     START_DELAY = int(sys.argv[1])
 
 # Delay between keyboard/mouse inputs
-INPUT_DELAY = 3
+INPUT_DELAY = 5
 
 
 # Create hash of file
 # Python program to find the SHA-1 message digest of a file
 # https://www.programiz.com/python-programming/examples/hash-file
-# importing the hashlib module
-import hashlib
-
 def hash_file(filename):
     """"This function returns the SHA-1 hash
     of the file passed into it"""
@@ -48,11 +47,13 @@ def press_esc(my_keyboard):
     my_keyboard.release(keyboard.Key.esc)
     print("Press and release ESC")
 
+
 # Press and release right arrow key
 def press_right_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.right)
     my_keyboard.release(keyboard.Key.right)
     print("Press and release right arrow key")
+
 
 # Press and release left arrow key
 def press_left_arrow(my_keyboard):
@@ -60,11 +61,13 @@ def press_left_arrow(my_keyboard):
     my_keyboard.release(keyboard.Key.left)
     print("Press and release left arrow key")
 
+
 # Press and release down arrow key
 def press_down_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.down)
     my_keyboard.release(keyboard.Key.down)
     print("Press and release down arrow key")
+
 
 # Press cmd+2 to activate gallery view
 def press_cmd_2(my_keyboard):
@@ -74,6 +77,7 @@ def press_cmd_2(my_keyboard):
     my_keyboard.release('2')
     print("Press cmd+2 to activate gallery view")
 
+
 # Press and release cmd+a
 def select_all_text(my_keyboard):
     my_keyboard.press(keyboard.Key.cmd)
@@ -81,6 +85,7 @@ def select_all_text(my_keyboard):
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('a')
     print("Press and release cmd+a")
+
 
 # Press and release cmd+c
 def copy_text(my_keyboard):
@@ -90,11 +95,20 @@ def copy_text(my_keyboard):
     my_keyboard.release('c')
     print("Press and release cmd+c")
 
+
 # Press and release enter key
 def press_enter(my_keyboard):
     my_keyboard.press(keyboard.Key.enter)
     my_keyboard.release(keyboard.Key.enter)
     print("Press and release enter key")
+
+
+# Press and release tab key to select opened note's text
+def press_tab(my_keyboard):
+    my_keyboard.press(keyboard.Key.tab)
+    my_keyboard.release(keyboard.Key.tab)
+    print("Press and release tab key")
+
 
 # Create /notes dir to save each note txt file
 def create_notes_dir():
@@ -137,10 +151,14 @@ def save_cur_note(my_mouse, my_keyboard):
 
     # Write a text file for the current note
     try:
-        filename = f'notes/{header}.txt'
+        # Ensure filename does not have illegal chars
+        cleaned_header = re.sub('[^a-zA-Z0-9\n\.]', ' ', header)
+        filename = f'notes/{cleaned_header}.txt'
         with open(filename, 'w') as f:
             f.write(body)
-            return hash_file(filename)
+            file_hash = hash_file(filename)
+            print(f"Saved note: {filename} with hash: {file_hash}")
+            return 
     except Exception as e:
         print(f"Failed to write the note file due to {e}")
         return -1
@@ -152,20 +170,20 @@ def main():
     my_keyboard = keyboard.Controller()
 
     # Save pointer position
-    notes_pos = my_mouse.position
-    print(f'The Notes pointer position is {notes_pos}')
-    print(f'Clicking in: {START_DELAY} seconds!')
+    #notes_pos = my_mouse.position
+    #print(f'The Notes pointer position is {notes_pos}')
+    #print(f'Clicking in: {START_DELAY} seconds!')
     time.sleep(START_DELAY)
 
     # Click on notes window to focus it
-    my_mouse.click(mouse.Button.left, 2)
-    time.sleep(INPUT_DELAY)
+    #my_mouse.click(mouse.Button.left, 2)
+    #time.sleep(INPUT_DELAY)
 
-    created_file = save_cur_note(my_mouse, my_keyboard)
-    press_cmd_2(my_keyboard=my_keyboard)
+    #created_file = save_cur_note(my_mouse, my_keyboard)
+    #press_cmd_2(my_keyboard=my_keyboard)
 
     # Reset cursor to notes_pos
-    my_mouse.position = notes_pos
+    #my_mouse.position = notes_pos
 
     # Enter shortcut keys to move down to next note
     # Found the shortcuts: https://support.apple.com/guide/notes/keyboard-shortcuts-and-gestures-apd46c25187e/mac
@@ -177,24 +195,28 @@ def main():
     # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
     files_written = []
     while True:
-        # Move right to next note
-        press_right_arrow(my_keyboard=my_keyboard)
-
-        time.sleep(INPUT_DELAY)
-
         # Open highlighted note
         press_enter(my_keyboard=my_keyboard)
+        time.sleep(INPUT_DELAY)
+
+        press_tab(my_keyboard=my_keyboard)
+        time.sleep(INPUT_DELAY)
 
         # Save highlighted note and store its hash
         created_file = save_cur_note(my_mouse, my_keyboard)
         files_written.append(created_file)
+        time.sleep(INPUT_DELAY)
 
         # Return to gallery view
         press_esc(my_keyboard=my_keyboard)
         time.sleep(INPUT_DELAY)
 
+        # Move right to next note
+        press_right_arrow(my_keyboard=my_keyboard)
+        time.sleep(INPUT_DELAY)
         # If last two notes are same, end of files reached
-        if files_written[-1] == files_written[len(files_written)-2]:
+        if len(files_written) > 2 and files_written[-1] == files_written[len(files_written)-2]:
+            print(f"Files written: {files_written} has len {len(files_written)}")
             print("Reached end of notes. Exiting program.")
             break
         elif created_file == files_written[-1]:
