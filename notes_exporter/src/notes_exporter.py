@@ -29,7 +29,7 @@ def hash_file(filename):
 
     # open file for reading in binary mode
     with open(filename,'rb') as file:
-
+        print(f"Opened {filename} for hashing")
         # loop till the end of the file
         chunk = 0
         while chunk != b'':
