@@ -27,8 +27,13 @@ func main() {
 		return
 	}
 
-	for _, v := range files {
-		fmt.Println(v.Name(), v.IsDir())
+	movies := make([]string, len(files))
+	for i, v := range files {
+		filename := v.Name()
+		is_dir := v.IsDir()
+
+		movies[i] = filename
+		fmt.Println(filename, is_dir)
 	}
 
 	fmt.Println("\n")
