@@ -169,27 +169,10 @@ def main():
     my_mouse = mouse.Controller()
     my_keyboard = keyboard.Controller()
 
-    # Save pointer position
-    #notes_pos = my_mouse.position
-    #print(f'The Notes pointer position is {notes_pos}')
-    #print(f'Clicking in: {START_DELAY} seconds!')
     time.sleep(START_DELAY)
 
-    # Click on notes window to focus it
-    #my_mouse.click(mouse.Button.left, 2)
-    #time.sleep(INPUT_DELAY)
-
-    #created_file = save_cur_note(my_mouse, my_keyboard)
-    #press_cmd_2(my_keyboard=my_keyboard)
-
-    # Reset cursor to notes_pos
-    #my_mouse.position = notes_pos
-
-    # Enter shortcut keys to move down to next note
-    # Found the shortcuts: https://support.apple.com/guide/notes/keyboard-shortcuts-and-gestures-apd46c25187e/mac
     # TODO: Implement the loop using the gallery view shortcut CMD+2, Enter to read a note, copy, then ESC
     # right arrow for next note until the same note repeats (end of row), then backtrack to beginning or row, hit down arrow
-
 
     # Run save_cur_note until end of notes
     # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
