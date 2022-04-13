@@ -14,9 +14,9 @@ else:
     START_DELAY = int(sys.argv[1])
 
 # Delay between keyboard/mouse inputs
-INPUT_DELAY = 5
+INPUT_DELAY = 2
 
-
+# TODO: Fix hash function because it is always the same
 # Create hash of file
 # Python program to find the SHA-1 message digest of a file
 # https://www.programiz.com/python-programming/examples/hash-file
@@ -158,7 +158,7 @@ def save_cur_note(my_mouse, my_keyboard):
             f.write(body)
             file_hash = hash_file(filename)
             print(f"Saved note: {filename} with hash: {file_hash}")
-            return 
+            return file_hash
     except Exception as e:
         print(f"Failed to write the note file due to {e}")
         return -1
@@ -171,10 +171,7 @@ def main():
 
     time.sleep(START_DELAY)
 
-    # TODO: Implement the loop using the gallery view shortcut CMD+2, Enter to read a note, copy, then ESC
-    # right arrow for next note until the same note repeats (end of row), then backtrack to beginning or row, hit down arrow
-
-    # Run save_cur_note until end of notes
+    # Runs save_cur_note until end of notes
     # Detects if the sha1 hash of notes/{header}.txt is already in the dir, if so then quit
     files_written = []
     while True:
@@ -198,12 +195,15 @@ def main():
         press_right_arrow(my_keyboard=my_keyboard)
         time.sleep(INPUT_DELAY)
         # If last two notes are same, end of files reached
-        if len(files_written) > 2 and files_written[-1] == files_written[len(files_written)-2]:
+        if len(files_written) > 2 and files_written[-1] == files_written[-3]:
             print(f"Files written: {files_written} has len {len(files_written)}")
             print("Reached end of notes. Exiting program.")
             break
-        elif created_file == files_written[-1]:
-            # Move to next row of gallery view
+        elif len(files_written) > 1 and files_written[-1] == files_written[-2]:
+            # Return to the start of the current row
+            for i in range(len(files_written)):
+                press_left_arrow(my_keyboard=my_keyboard)
+            # Move down to the next row
             press_down_arrow(my_keyboard=my_keyboard)
 
 
