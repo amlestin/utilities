@@ -14,31 +14,7 @@ else:
     START_DELAY = int(sys.argv[1])
 
 # Delay between keyboard/mouse inputs
-INPUT_DELAY = 2
-
-# TODO: Fix hash function because it is always the same
-# Create hash of file
-# Python program to find the SHA-1 message digest of a file
-# https://www.programiz.com/python-programming/examples/hash-file
-def hash_file(filename):
-    """"This function returns the SHA-1 hash
-    of the file passed into it"""
-
-    # make a hash object
-    h = hashlib.sha1()
-
-    # open file for reading in binary mode
-    with open(filename,'rb') as file:
-        print(f"Opened {filename} for hashing")
-        # loop till the end of the file
-        chunk = 0
-        while chunk != b'':
-            # read only 1024 bytes at a time
-            chunk = file.read(1024)
-            h.update(chunk)
-
-    # return the hex representation of digest
-    return h.hexdigest()
+INPUT_DELAY = 1
 
 
 # Press and release ESC
@@ -130,6 +106,7 @@ def save_cur_note(my_mouse, my_keyboard):
     if text is None:
         time.sleep(INPUT_DELAY)
         text = pyperclip.paste()
+        pyperclip.copy('')
 
     try:
         text_lines = text.split("\n")
@@ -155,8 +132,9 @@ def save_cur_note(my_mouse, my_keyboard):
         cleaned_header = re.sub('[^a-zA-Z0-9\n\.]', ' ', header)
         filename = f'notes/{cleaned_header}.txt'
         with open(filename, 'w') as f:
+            # TODO: How to save images in Notes, tables, other data or whether they are out of scope
             f.write(body)
-            file_hash = hash_file(filename)
+            file_hash = hashlib.sha1(str.encode(body)).hexdigest()
             print(f"Saved note: {filename} with hash: {file_hash}")
             return file_hash
     except Exception as e:
