@@ -1,3 +1,7 @@
 notes_exporter/src/notes/
 notes/
 .DS_Store
+.gitignore
+notes_exporter/src/__pycache__/__init__.cpython-39.pyc
+notes_exporter/src/__pycache__/notes_exporter.cpython-39.pyc
+notes_exporter/__pycache__/__init__.cpython-39.pyc
