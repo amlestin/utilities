@@ -4,10 +4,35 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"math/rand"
+	crypto_rand "crypto/rand"
+	"encoding/binary"
+	"strings"
 )
 
+func isMovie(title string) bool {
+	if strings.Contains(title, ".mp4") {
+		return true
+	}
+	return false
+}
+
 func main() {
-	current_dir, err := os.Getwd()
+	// seed the random number generator
+	var b [8]byte
+	_, err := crypto_rand.Read(b[:])
+	if err != nil {
+		return
+	}
+	rand.Seed(int64(binary.LittleEndian.Uint64(b[:])))
+
+	// Scans the dir given if there is a command line argument, else uses dir the program is running in
+	var current_dir string
+	if len(os.Args) > 1 {
+		current_dir = os.Args[1]
+	} else {
+		current_dir, err = os.Getwd()
+	}
 
 	if err != nil {
 		log.Println(err)
@@ -15,7 +40,6 @@ func main() {
 
 	fmt.Println("Scanning foler: " + current_dir)
 
-	// TODO: List files
 	f, err := os.Open(current_dir)
 	if err != nil {
 		fmt.Println(err)
@@ -27,18 +51,28 @@ func main() {
 		return
 	}
 
+	// save valid movies to the array "movies"
 	movies := make([]string, len(files))
-	for i, v := range files {
+	movieCtr := 0
+	for _, v := range files {
 		filename := v.Name()
 		is_dir := v.IsDir()
 
-		movies[i] = filename
-		fmt.Println(filename, is_dir)
+		if isMovie(filename) {
+			movies[movieCtr] = filename
+			movieCtr++
+			fmt.Println(filename, is_dir)
+		}
+
 	}
 
+	// quit if no movies were found
+	if movieCtr == 0 {
+		fmt.Println("No movies found at", current_dir)
+		return
+	}
 	fmt.Println("\n")
 
-	// TODO: Pick a random value in list if it ends in a movie fmt
-	chosen_movie := "test"
+	chosen_movie := movies[rand.Intn(movieCtr)]
 	fmt.Println("Your next movie is: " + chosen_movie)
 }
