@@ -18,7 +18,7 @@ A tool to export all notes from MacOS Notes as TXT files.
 1. ```python3 notes_exporter.py```
 2. Click on Notes app within START_DELAY (in code) seconds
 
-## go run movie_picker.go
+## movie_picker.go:
 ### Setup
 
 To access VLC from the Terminal on MacOS, add this to ~/.bashrc and ```source ~/.bashrc```
