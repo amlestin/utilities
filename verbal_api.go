@@ -1,9 +1,12 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"strings"
+
+	"github.com/aws/aws-lambda-go/lambda"
 )
 
 type ConversionEntry struct {
@@ -11,7 +14,7 @@ type ConversionEntry struct {
 	New string
 }
 
-func main() {
+func getVerbalTable() []byte {
 	raw_data := `
 	"170":"800",
 	"169":"750",
@@ -69,7 +72,7 @@ func main() {
 
 	b, err := json.Marshal(verbal_map)
 	if err != nil {
-		return
+		return nil
 	}
 
 	fmt.Println(verbal_map, b, "\n")
@@ -77,4 +80,15 @@ func main() {
 	var ce ConversionEntry
 	json.Unmarshal(b, &ce)
 	fmt.Println(verbal_map, ce)
+
+	return b
+}
+
+func HandleRequest(ctx context.Context) (string, error) {
+	verbalTableStr := getVerbalTable()
+	return string(verbalTableStr), nil
+}
+
+func main() {
+	lambda.Start(HandleRequest)
 }

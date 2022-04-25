@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"os/exec"
 	"math/rand"
 	crypto_rand "crypto/rand"
 	"encoding/binary"
@@ -35,19 +36,19 @@ func main() {
 	}
 
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
 	fmt.Println("Scanning foler: " + current_dir)
 
 	f, err := os.Open(current_dir)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 	files, err := f.Readdir(0)
 	if err != nil {
-		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 
@@ -75,4 +76,17 @@ func main() {
 
 	chosen_movie := movies[rand.Intn(movieCtr)]
 	fmt.Println("Your next movie is: " + chosen_movie)
+	path := current_dir + "/" + chosen_movie
+	chosen_movie_path := strings.Replace(path, " ", "\\ ", -1)
+	fmt.Println(chosen_movie_path)
+	
+	// open the movie in VLC
+	// TODO: Fix MRL
+	cmd := exec.Command("vlc", chosen_movie_path)
+	err = cmd.Start()
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
