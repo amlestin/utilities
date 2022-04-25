@@ -62,7 +62,7 @@ func main() {
 		if isMovie(filename) {
 			movies[movieCtr] = filename
 			movieCtr++
-			fmt.Println(filename, is_dir)
+			log.Println(filename, is_dir)
 		}
 
 	}
@@ -81,8 +81,7 @@ func main() {
 	fmt.Println(chosen_movie_path)
 	
 	// open the movie in VLC
-	// TODO: Fix MRL
-	cmd := exec.Command("vlc", chosen_movie_path)
+	cmd := exec.Command("vlc", path)
 	err = cmd.Start()
 
 	if err != nil {
