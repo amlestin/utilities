@@ -46,11 +46,13 @@ func getVerbalTable() []byte {
 	json.Unmarshal(b, &ce)
 	fmt.Println(verbal_map, ce)
 
-	return b
+	return b, raw_data
 }
 
 func HandleRequest(ctx context.Context) (string, error) {
-	verbalTableStr := getVerbalTable()
+	_, verbalTableStr := getVerbalTable()
+
+	// parsing the ConversionEntry structs is adding work; going to try using a regular string
 	return string(verbalTableStr), nil
 }
 

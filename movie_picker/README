@@ -1,0 +1,10 @@
+## Setup
+
+To access VLC from the Terminal on MacOS, add this to ~/.bashrc and source it
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+export PATH=$PATH:/Applications/VLC.app/Contents/MacOS/
+
+## Usage
+movie_picker.go // To search the dir containing the binary
+OR
+movie_picker.go path_to_movies_directory
