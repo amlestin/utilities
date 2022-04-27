@@ -5,8 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"strings"
-
+	"io/ioutil"
 	"github.com/aws/aws-lambda-go/lambda"
+	"log"
 )
 
 type ConversionEntry struct {
@@ -14,14 +15,12 @@ type ConversionEntry struct {
 	New string
 }
 
-func getVerbalTable() []byte {
-	raw_data := `
-	"170":"800",
-	"169":"750",
-	"168":"730",
-	"167":"710",
-	"130":"230"`
-
+func getVerbalTable() ([]byte, string) {
+	text, err := ioutil.ReadFile("verbal_data.txt")
+	if err != nil {
+		log.Fatal("Failed to read input file!")
+	}
+	raw_data := string(text)
 	cleaned_data := strings.Fields(raw_data)
 	num_rows := len(cleaned_data)
 
@@ -37,7 +36,7 @@ func getVerbalTable() []byte {
 
 	b, err := json.Marshal(verbal_map)
 	if err != nil {
-		return nil
+		panic("Cannot create JSON.")
 	}
 
 	fmt.Println(verbal_map, b, "\n")
