@@ -5,11 +5,11 @@ def calc_sal(hourly_rate, hours = 40):
 	return hours*weeks*hourly_rate
 
 try:
-	hourly_rate = int(sys.argv[1])
+	hourly_rate = float(sys.argv[1])
 except IndexError:
-	hourly_rate = int(input("Enter the hourly rate of the job: "))
+	hourly_rate = float(input("Enter the hourly rate of the job: "))
 finally:
 	salary = calc_sal(hourly_rate)	
 
 # TODO: format as currency
-print(f"An hourly rate of ${hourly_rate}/hr equates to an approximate annual salary of ${salary}")
+print("An hourly rate of ${}/hr equates to an approximate annual salary of ${:,.2f}".format(hourly_rate, salary))
