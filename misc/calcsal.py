@@ -11,5 +11,4 @@ except IndexError:
 finally:
 	salary = calc_sal(hourly_rate)	
 
-# TODO: format as currency
 print("An hourly rate of ${}/hr equates to an approximate annual salary of ${:,.2f}".format(hourly_rate, salary))
