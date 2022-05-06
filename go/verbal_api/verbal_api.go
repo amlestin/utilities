@@ -21,6 +21,8 @@ func getVerbalTable() ([]byte, string) {
 		log.Fatal("Failed to read input file!")
 	}
 	raw_data := string(text)
+	log.Println(raw_data)
+
 	cleaned_data := strings.Fields(raw_data)
 	num_rows := len(cleaned_data)
 
