@@ -38,7 +38,7 @@ func getVerbalTable() ([]byte, string) {
 
 	b, err := json.Marshal(verbal_map)
 	if err != nil {
-		panic("Cannot create JSON.")
+		panic("Failed to create JSON!")
 	}
 
 	fmt.Println(verbal_map, b, "\n")
@@ -53,7 +53,6 @@ func getVerbalTable() ([]byte, string) {
 func HandleRequest(ctx context.Context) (string, error) {
 	_, verbalTableStr := getVerbalTable()
 
-	// parsing the ConversionEntry structs is adding work; going to try using a regular string
 	return string(verbalTableStr), nil
 }
 
