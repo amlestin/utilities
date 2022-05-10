@@ -57,12 +57,10 @@ func main() {
 	movieCtr := 0
 	for _, v := range files {
 		filename := v.Name()
-		is_dir := v.IsDir()
 
 		if isMovie(filename) {
 			movies[movieCtr] = filename
 			movieCtr++
-			log.Println(filename, is_dir)
 		}
 
 	}
@@ -72,15 +70,15 @@ func main() {
 		fmt.Println("No movies found at", current_dir)
 		return
 	}
-	fmt.Println("\n")
 
 	chosen_movie := movies[rand.Intn(movieCtr)]
 	fmt.Println("Your next movie is: " + chosen_movie)
 	path := current_dir + "/" + chosen_movie
-	chosen_movie_path := strings.Replace(path, " ", "\\ ", -1)
-	fmt.Println(chosen_movie_path)
+	// chosen_movie_path := strings.Replace(path, " ", "\\ ", -1)
+	// fmt.Println(chosen_movie_path)
 	
 	// open the movie in VLC
+	// TODO: confirm VLC is in $PATH
 	cmd := exec.Command("vlc", path)
 	err = cmd.Start()
 
