@@ -74,8 +74,6 @@ func main() {
 	chosen_movie := movies[rand.Intn(movieCtr)]
 	fmt.Println("Your next movie is: " + chosen_movie)
 	path := current_dir + "/" + chosen_movie
-	// chosen_movie_path := strings.Replace(path, " ", "\\ ", -1)
-	// fmt.Println(chosen_movie_path)
 	
 	// open the movie in VLC
 	// TODO: confirm VLC is in $PATH
