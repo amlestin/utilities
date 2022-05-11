@@ -77,6 +77,7 @@ func main() {
 	
 	// open the movie in VLC
 	// TODO: confirm VLC is in $PATH
+	fmt.Println(os.Getenv("PATH"))
 	cmd := exec.Command("vlc", path)
 	err = cmd.Start()
 
