@@ -5,7 +5,9 @@ import pyperclip
 import hashlib
 import re
 from pynput import mouse, keyboard
+import logging
 
+logger = logging.getLogger()
 
 # Set delay between program start and first automatic action
 if len(sys.argv) < 2:
@@ -21,28 +23,28 @@ INPUT_DELAY = 1
 def press_esc(my_keyboard):
     my_keyboard.press(keyboard.Key.esc)
     my_keyboard.release(keyboard.Key.esc)
-    print("Press and release ESC")
+    logger.info("Press and release ESC")
 
 
 # Press and release right arrow key
 def press_right_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.right)
     my_keyboard.release(keyboard.Key.right)
-    print("Press and release right arrow key")
+    logger.info("Press and release right arrow key")
 
 
 # Press and release left arrow key
 def press_left_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.left)
     my_keyboard.release(keyboard.Key.left)
-    print("Press and release left arrow key")
+    logger.info("Press and release left arrow key")
 
 
 # Press and release down arrow key
 def press_down_arrow(my_keyboard):
     my_keyboard.press(keyboard.Key.down)
     my_keyboard.release(keyboard.Key.down)
-    print("Press and release down arrow key")
+    logger.info("Press and release down arrow key")
 
 
 # Press cmd+2 to activate gallery view
@@ -51,7 +53,7 @@ def press_cmd_2(my_keyboard):
     my_keyboard.press('2')
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('2')
-    print("Press cmd+2 to activate gallery view")
+    logger.info("Press cmd+2 to activate gallery view")
 
 
 # Press and release cmd+a
@@ -60,7 +62,7 @@ def select_all_text(my_keyboard):
     my_keyboard.press('a')
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('a')
-    print("Press and release cmd+a")
+    logger.info("Press and release cmd+a")
 
 
 # Press and release cmd+c
@@ -69,21 +71,21 @@ def copy_text(my_keyboard):
     my_keyboard.press('c')
     my_keyboard.release(keyboard.Key.cmd)
     my_keyboard.release('c')
-    print("Press and release cmd+c")
+    logger.info("Press and release cmd+c")
 
 
 # Press and release enter key
 def press_enter(my_keyboard):
     my_keyboard.press(keyboard.Key.enter)
     my_keyboard.release(keyboard.Key.enter)
-    print("Press and release enter key")
+    logger.info("Press and release enter key")
 
 
 # Press and release tab key to select opened note's text
 def press_tab(my_keyboard):
     my_keyboard.press(keyboard.Key.tab)
     my_keyboard.release(keyboard.Key.tab)
-    print("Press and release tab key")
+    logger.info("Press and release tab key")
 
 
 # Create /notes dir to save each note txt file
@@ -92,7 +94,7 @@ def create_notes_dir():
         if 'notes' not in os.listdir('.'):
             os.mkdir('notes')
     except OSError as e:
-        print(f'Attempted to create notes dir that already exists: {e}')
+        logger.info(f'Attempted to create notes dir that already exists: {e}')
 
 
 def save_cur_note(my_mouse, my_keyboard):
@@ -113,17 +115,17 @@ def save_cur_note(my_mouse, my_keyboard):
         header = text_lines[0].rstrip()
         body = '\n'.join(text_lines[1:])
     except Exception as e:
-        print("Error: could not paste text: {e}")
+        logger.info("Error: could not paste text: {e}")
 
     # Log processed text
-    #print(header)
-    #print(body)
+    #logger.info(header)
+    #logger.info(body)
 
     # Create notes dir if not exists
     try:
         create_notes_dir()
     except OSError as e:
-            print("Failed to create a notes directory")
+            logger.info("Failed to create a notes directory")
             return -1
 
     # Write a text file for the current note
@@ -135,10 +137,10 @@ def save_cur_note(my_mouse, my_keyboard):
             # TODO: How to save images in Notes, tables, other data or whether they are out of scope
             f.write(body)
             file_hash = hashlib.sha1(str.encode(body)).hexdigest()
-            print(f"Saved note: {filename} with hash: {file_hash}")
+            logger.info(f"Saved note: {filename} with hash: {file_hash}")
             return file_hash
     except Exception as e:
-        print(f"Failed to write the note file due to {e}")
+        logger.error(f"Failed to write the note file due to {e}")
         return -1
 
 
@@ -174,8 +176,8 @@ def main():
         time.sleep(INPUT_DELAY)
         # If last two notes are same, end of files reached
         if len(files_written) > 2 and files_written[-1] == files_written[-3]:
-            print(f"Files written: {files_written} has len {len(files_written)}")
-            print("Reached end of notes. Exiting program.")
+            logger.info(f"Files written: {files_written} has len {len(files_written)}")
+            logger.info("Reached end of notes. Exiting program.")
             break
         elif len(files_written) > 1 and files_written[-1] == files_written[-2]:
             # Return to the start of the current row
