@@ -18,6 +18,7 @@ else:
 # Delay between keyboard/mouse inputs
 INPUT_DELAY = 1
 
+# TODO: create reusable press and release function
 
 # Press and release ESC
 def press_esc(my_keyboard):
@@ -116,10 +117,6 @@ def save_cur_note(my_mouse, my_keyboard):
         body = '\n'.join(text_lines[1:])
     except Exception as e:
         logger.info("Error: could not paste text: {e}")
-
-    # Log processed text
-    #logger.info(header)
-    #logger.info(body)
 
     # Create notes dir if not exists
     try:
