@@ -1,3 +1,6 @@
 For use with Hammerspoon MacOS Lua automation
 
 https://github.com/Hammerspoon/hammerspoon
+
+Motivation:
+My replacement left AirPod is never picked up and the audio balance defaults to 1 aka the R airpod each time I connect to the pair. This fixes my balance automatically, so I don't have to change it manually in Sound Preferences.
