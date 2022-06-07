@@ -4,10 +4,13 @@ import sys
 import pyperclip
 import hashlib
 import re
-from pynput import mouse, keyboard
 import logging
+import keyboard_helpers as kh
+from pynput import mouse, keyboard
 
-logger = logging.getLogger()
+logging.basicConfig()
+logger = logging.getLogger("notes-exporter")
+logger.setLevel(logging.INFO)
 
 # Set delay between program start and first automatic action
 if len(sys.argv) < 2:
@@ -17,77 +20,6 @@ else:
 
 # Delay between keyboard/mouse inputs
 INPUT_DELAY = 1
-
-# TODO: create reusable press and release function
-
-# Press and release ESC
-def press_esc(my_keyboard):
-    my_keyboard.press(keyboard.Key.esc)
-    my_keyboard.release(keyboard.Key.esc)
-    logger.info("Press and release ESC")
-
-
-# Press and release right arrow key
-def press_right_arrow(my_keyboard):
-    my_keyboard.press(keyboard.Key.right)
-    my_keyboard.release(keyboard.Key.right)
-    logger.info("Press and release right arrow key")
-
-
-# Press and release left arrow key
-def press_left_arrow(my_keyboard):
-    my_keyboard.press(keyboard.Key.left)
-    my_keyboard.release(keyboard.Key.left)
-    logger.info("Press and release left arrow key")
-
-
-# Press and release down arrow key
-def press_down_arrow(my_keyboard):
-    my_keyboard.press(keyboard.Key.down)
-    my_keyboard.release(keyboard.Key.down)
-    logger.info("Press and release down arrow key")
-
-
-# Press cmd+2 to activate gallery view
-def press_cmd_2(my_keyboard):
-    my_keyboard.press(keyboard.Key.cmd)
-    my_keyboard.press('2')
-    my_keyboard.release(keyboard.Key.cmd)
-    my_keyboard.release('2')
-    logger.info("Press cmd+2 to activate gallery view")
-
-
-# Press and release cmd+a
-def select_all_text(my_keyboard):
-    my_keyboard.press(keyboard.Key.cmd)
-    my_keyboard.press('a')
-    my_keyboard.release(keyboard.Key.cmd)
-    my_keyboard.release('a')
-    logger.info("Press and release cmd+a")
-
-
-# Press and release cmd+c
-def copy_text(my_keyboard):
-    my_keyboard.press(keyboard.Key.cmd)
-    my_keyboard.press('c')
-    my_keyboard.release(keyboard.Key.cmd)
-    my_keyboard.release('c')
-    logger.info("Press and release cmd+c")
-
-
-# Press and release enter key
-def press_enter(my_keyboard):
-    my_keyboard.press(keyboard.Key.enter)
-    my_keyboard.release(keyboard.Key.enter)
-    logger.info("Press and release enter key")
-
-
-# Press and release tab key to select opened note's text
-def press_tab(my_keyboard):
-    my_keyboard.press(keyboard.Key.tab)
-    my_keyboard.release(keyboard.Key.tab)
-    logger.info("Press and release tab key")
-
 
 # Create /notes dir to save each note txt file
 def create_notes_dir():
@@ -100,9 +32,9 @@ def create_notes_dir():
 
 def save_cur_note(my_mouse, my_keyboard):
     # Select all text in the notes window and copy it to keyboard
-    select_all_text(my_keyboard)
+    kh.select_all_text(my_keyboard)
     time.sleep(INPUT_DELAY)
-    copy_text(my_keyboard)
+    kh.copy_text(my_keyboard)
 
     # Extract notes text from clipboard and separate to header, body
     text = pyperclip.paste()
@@ -153,10 +85,10 @@ def main():
     files_written = []
     while True:
         # Open highlighted note
-        press_enter(my_keyboard=my_keyboard)
+        kh.press_enter(my_keyboard=my_keyboard)
         time.sleep(INPUT_DELAY)
 
-        press_tab(my_keyboard=my_keyboard)
+        kh.press_tab(my_keyboard=my_keyboard)
         time.sleep(INPUT_DELAY)
 
         # Save highlighted note and store its hash
@@ -165,11 +97,11 @@ def main():
         time.sleep(INPUT_DELAY)
 
         # Return to gallery view
-        press_esc(my_keyboard=my_keyboard)
+        kh.press_esc(my_keyboard=my_keyboard)
         time.sleep(INPUT_DELAY)
 
         # Move right to next note
-        press_right_arrow(my_keyboard=my_keyboard)
+        kh.press_right_arrow(my_keyboard=my_keyboard)
         time.sleep(INPUT_DELAY)
         # If last two notes are same, end of files reached
         if len(files_written) > 2 and files_written[-1] == files_written[-3]:
@@ -179,10 +111,9 @@ def main():
         elif len(files_written) > 1 and files_written[-1] == files_written[-2]:
             # Return to the start of the current row
             for i in range(len(files_written)):
-                press_left_arrow(my_keyboard=my_keyboard)
+                kh.press_left_arrow(my_keyboard=my_keyboard)
             # Move down to the next row
-            press_down_arrow(my_keyboard=my_keyboard)
-
+            kh.press_down_arrow(my_keyboard=my_keyboard)
 
 
 if __name__ == '__main__':
