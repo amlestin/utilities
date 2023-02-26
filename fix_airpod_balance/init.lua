@@ -1,3 +1,5 @@
+hs.console.darkMode(true)
+
 DEFAULT_BALANCE = 0.5
 
 function audioChangedCallback()
