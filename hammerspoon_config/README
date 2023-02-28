@@ -3,7 +3,9 @@ For use with Hammerspoon MacOS Lua automation
 https://github.com/Hammerspoon/hammerspoon
 
 Motivation:
-My replacement left AirPod is never picked up and the audio balance defaults to 1 aka the R airpod each time I connect to the pair. This fixes my balance automatically, so I don't have to change it manually in Sound Preferences.
+1. My replacement left AirPod is never picked up and the audio balance defaults to 1 aka the R airpod each time I connect to the pair. This fixes my balance automatically, so I don't have to change it manually in Sound Preferences.
+2. When I plug my laptop into my LG external display, the resolution is set to 2560x1080 by default rather than the 3440x1440 the monitor was designed for. This script automatically sets the correct resolution when I connect the LG external display.
 
 TODO:
-- Fix balance upon volume change
+- Fix balance upon volume change instead of upon connection.
+- Align monitors so the built-in display is below the LG.
