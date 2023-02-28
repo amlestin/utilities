@@ -20,6 +20,7 @@ function screenCallback(eventType, screen)
   if eventType == hs.screen.watcher.connected then
       if screen:name() == "LG" then
           screen:setMode(3440, 1440, 1.0, 50.0, 8)
+          -- TODO: set monitor above built-in display
       end
   end
 end
