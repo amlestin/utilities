@@ -1,7 +1,6 @@
 import sys
 
-def calc_sal(hourly_rate, hours = 40):
-	weeks = 52
+def calc_sal(hourly_rate, hours = 40, weeks=52):
 	return hours*weeks*hourly_rate
 
 try:
