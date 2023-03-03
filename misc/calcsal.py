@@ -17,6 +17,7 @@ def main():
 		hourly_rate = float(sys.argv[1])
 	except IndexError:
 		hourly_rate = get_hourly_rate()
+		# TODO: prompt for hours/week and week/year to customize calculation
 
 	salary = calc_sal(hourly_rate)	
 	print("An hourly rate of ${}/hr equates to an approximate annual salary of ${:,.2f}".format(hourly_rate, salary))
